@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PriStilo | Acesso Administrativo</title>
+    <link rel="stylesheet" href="/static/styles.css" />
+  </head>
+  <body>
+    <div class="page-shell">
+      <nav class="topbar" aria-label="Navegacao principal">
+        <a class="brand" href="/">
+          <span class="brand-logo">
+            <img src="/static/assets/pristilo-logo.png" alt="PriStilo Moda & Estilo" />
+          </span>
+          <span>
+            <strong>PriStilo</strong>
+            <small>Acesso administrativo</small>
+          </span>
+        </a>
+        <div class="topbar-actions">
+          <a href="/" class="ghost-link">Voltar para vitrine</a>
+        </div>
+      </nav>
+
+      <main class="admin-main login-main">
+        <section class="admin-card login-card">
+          <p class="eyebrow">Painel protegido</p>
+          <h1>Entrar para cadastrar produtos</h1>
+          <p class="login-copy">
+            Informe a senha administrativa para acessar o cadastro e gerenciar
+            produtos da vitrine.
+          </p>
+
+          <form class="admin-form" action="/admin/login" method="post">
+            <label>
+              Senha
+              <input
+                autocomplete="current-password"
+                autofocus
+                name="password"
+                required
+                type="password"
+                placeholder="Digite a senha"
+              />
+            </label>
+
+            <button class="primary-button full" type="submit">Entrar</button>
+            <p class="form-status" id="loginStatus" role="status"></p>
+          </form>
+        </section>
+      </main>
+    </div>
+
+    <script>
+      const status = document.querySelector("#loginStatus");
+      const params = new URLSearchParams(window.location.search);
+
+      if (params.has("error")) {
+        status.textContent = "Senha incorreta ou nao configurada.";
+      }
+    </script>
+  </body>
+</html>

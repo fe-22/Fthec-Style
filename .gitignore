@@ -1,0 +1,13 @@
+.idea/
+.venv/
+
+backend/.env
+backend/.env.invalid-dir.bak/
+backend/.git.nested-backup/
+backend/.venv/
+backend/frontend/uploads/
+backend/uvicorn.*.log
+backend/vitrine_virtual.db
+
+**/__pycache__/
+*.py[cod]

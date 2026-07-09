@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PriStilo | Painel Administrativo</title>
+    <link rel="stylesheet" href="/static/styles.css" />
+  </head>
+  <body>
+    <div class="page-shell">
+      <nav class="topbar" aria-label="Navegacao principal">
+        <a class="brand" href="/">
+          <span class="brand-logo">
+            <img src="/static/assets/pristilo-logo.png" alt="PriStilo Moda & Estilo" />
+          </span>
+          <span>
+            <strong>PriStilo</strong>
+            <small>Painel de produtos</small>
+          </span>
+        </a>
+        <div class="topbar-actions">
+          <a href="/" class="ghost-link">Voltar para vitrine</a>
+          <a href="/docs" class="ghost-link">API docs</a>
+          <form action="/admin/logout" method="post">
+            <button class="ghost-link" type="submit">Sair</button>
+          </form>
+        </div>
+      </nav>
+
+      <main class="admin-main">
+        <section class="section-header">
+          <div>
+            <p class="eyebrow">Cadastro</p>
+            <h1>Produtos da vitrine</h1>
+          </div>
+          <p>Cadastre e ajuste as pecas que aparecem na vitrine.</p>
+        </section>
+
+        <section class="admin-layout">
+          <article class="admin-card">
+            <form class="admin-form" id="productForm">
+              <div class="admin-form-header">
+                <div>
+                  <p class="eyebrow">Produto</p>
+                  <h2 id="formTitle">Novo produto</h2>
+                </div>
+                <button class="secondary-link compact-button" id="cancelEditButton" type="button" hidden>
+                  Cancelar edicao
+                </button>
+              </div>
+
+              <div class="image-preview" id="imagePreview">
+                <span>Escolha uma foto da peca</span>
+              </div>
+
+              <label>
+                Foto do produto
+                <input id="imageInput" type="file" accept="image/png,image/jpeg,image/webp" />
+              </label>
+
+              <div class="field-grid">
+                <label>
+                  Nome
+                  <input id="nameInput" type="text" required placeholder="Vestido midi preto" />
+                </label>
+                <label>
+                  SKU
+                  <input id="skuInput" type="text" required placeholder="PRI-VEST-MIDI-PRETO" />
+                </label>
+              </div>
+
+              <label>
+                Descricao
+                <textarea
+                  id="descriptionInput"
+                  rows="3"
+                  placeholder="Descreva tecido, caimento, ocasiao e diferencial da peca"
+                ></textarea>
+              </label>
+
+              <div class="field-grid">
+                <label>
+                  Categoria
+                  <input id="categoryInput" type="text" required placeholder="vestido, blazer, calca..." />
+                </label>
+                <label>
+                  Preco
+                  <input id="priceInput" type="number" min="0.01" step="0.01" required placeholder="249.90" />
+                </label>
+              </div>
+
+              <div class="field-grid">
+                <label>
+                  Estoque
+                  <input id="stockInput" type="number" min="0" step="1" required value="1" />
+                </label>
+                <label>
+                  Tamanhos
+                  <input id="sizesInput" type="text" placeholder="p, m, g ou 36, 38, 40" />
+                </label>
+              </div>
+
+              <div class="field-grid">
+                <label>
+                  Cores
+                  <input id="colorsInput" type="text" placeholder="preto, off white, verde" />
+                </label>
+                <label>
+                  Tags de uso
+                  <input id="tagsInput" type="text" placeholder="trabalho, festa, casual" />
+                </label>
+              </div>
+
+              <label>
+                Palavras de estilo
+                <input id="styleInput" type="text" placeholder="elegante, classico, romantico, moderno" />
+                <span class="form-help">Essas palavras ajudam a personal stylist recomendar melhor.</span>
+              </label>
+
+              <button class="primary-button full" id="formSubmitButton" type="submit">Cadastrar produto</button>
+              <p class="form-status" id="formStatus" role="status"></p>
+            </form>
+          </article>
+
+          <article class="admin-card">
+            <div class="section-header compact">
+              <div>
+                <p class="eyebrow">Vitrine</p>
+                <h2>Produtos cadastrados</h2>
+              </div>
+            </div>
+            <div class="admin-list" id="adminProductList" aria-live="polite"></div>
+          </article>
+        </section>
+      </main>
+    </div>
+
+    <script src="/static/admin.js" defer></script>
+  </body>
+</html>

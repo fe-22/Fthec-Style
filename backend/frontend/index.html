@@ -1,0 +1,191 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PriStilo | Vitrine Virtual</title>
+    <link rel="stylesheet" href="/static/styles.css" />
+  </head>
+  <body>
+    <div class="page-shell">
+      <header class="hero">
+        <nav class="topbar" aria-label="Navegacao principal">
+          <a class="brand" href="/">
+            <span class="brand-logo">
+              <img src="/static/assets/pristilo-logo.png" alt="PriStilo Moda & Estilo" />
+            </span>
+            <span>
+              <strong>PriStilo</strong>
+              <small>Vitrine com consultoria</small>
+            </span>
+          </a>
+          <div class="topbar-actions">
+            <a href="#stylist" class="ghost-link">Personal stylist</a>
+            <a href="/admin" class="ghost-link">Cadastrar produtos</a>
+            <button class="cart-button" id="openCartButton" type="button">
+              Sacola <span id="cartCount">0</span>
+            </button>
+          </div>
+        </nav>
+
+        <section class="hero-grid">
+          <div class="hero-copy reveal">
+            <p class="eyebrow">PriStilo Moda & Estilo</p>
+            <h1>Monte o look, fale com a consultora e finalize pelo WhatsApp.</h1>
+            <p class="hero-text">
+              Uma vitrine enxuta para descoberta, recomendacao de estilo e
+              fechamento humano. A IA sugere, a consultora confirma disponibilidade,
+              frete e pagamento.
+            </p>
+            <div class="hero-actions">
+              <a class="primary-link" href="#catalog">Ver pecas</a>
+              <a class="secondary-link" href="#stylist">Pedir sugestao</a>
+            </div>
+          </div>
+
+          <div class="hero-card reveal">
+            <div class="look-card">
+              <span class="look-label">Look guia</span>
+              <div class="fabric-swatch swatch-dark"></div>
+              <div class="fabric-swatch swatch-sand"></div>
+              <div class="fabric-swatch swatch-clay"></div>
+              <h2>Alfaiataria leve + ponto de cor</h2>
+              <p>
+                Base elegante, textura acetinada e uma peça statement para
+                transitar entre trabalho e jantar.
+              </p>
+            </div>
+          </div>
+        </section>
+      </header>
+
+      <main>
+        <section class="section-header" id="catalog">
+          <div>
+            <p class="eyebrow">Catalogo</p>
+            <h2>Peças disponiveis</h2>
+          </div>
+          <p>
+            Filtre por categoria, busca ou orçamento. Adicione itens a sacola
+            para gerar o atendimento no WhatsApp.
+          </p>
+        </section>
+
+        <section class="filters" aria-label="Filtros da vitrine">
+          <label>
+            Buscar
+            <input id="searchInput" type="search" placeholder="blazer, vestido, trabalho..." />
+          </label>
+          <label>
+            Categoria
+            <select id="categorySelect">
+              <option value="">Todas</option>
+            </select>
+          </label>
+          <label>
+            Orçamento maximo
+            <input id="budgetInput" type="number" min="0" step="10" placeholder="Ex: 300" />
+          </label>
+        </section>
+
+        <section class="catalog-grid" id="productGrid" aria-live="polite"></section>
+
+        <section class="stylist-panel" id="stylist">
+          <div class="stylist-copy">
+            <p class="eyebrow">Personal stylist IA</p>
+            <h2>Descreva a ocasião e receba uma curadoria.</h2>
+            <p>
+              Exemplo: "Tenho um jantar de trabalho, gosto de preto, tamanho M,
+              quero algo elegante ate R$ 400".
+            </p>
+          </div>
+          <form class="stylist-form" id="stylistForm">
+            <textarea
+              id="stylistMessage"
+              rows="4"
+              placeholder="Conte ocasiao, estilo, cores, tamanho e orcamento."
+              required
+            ></textarea>
+            <div class="stylist-fields">
+              <input id="occasionInput" type="text" placeholder="Ocasiao" />
+              <input id="sizeInput" type="text" placeholder="Tamanho" />
+              <input id="colorInput" type="text" placeholder="Cor preferida" />
+              <input id="styleInput" type="text" placeholder="Estilo" />
+            </div>
+            <button class="primary-button" type="submit">Sugerir looks</button>
+          </form>
+          <div class="stylist-result" id="stylistResult" aria-live="polite"></div>
+        </section>
+      </main>
+
+      <footer class="site-footer">
+        <img src="/static/assets/fthec-logo.png" alt="Fthec Sistemas e Automação" />
+        <div>
+          <strong>Desenvolvido por Fthec Sistemas e Automação</strong>
+          <span>CNPJ 64.212.742/0001-63</span>
+        </div>
+      </footer>
+    </div>
+
+    <aside class="cart-drawer" id="cartDrawer" aria-hidden="true">
+      <div class="cart-backdrop" id="cartBackdrop"></div>
+      <section class="cart-panel" aria-label="Sacola de compras">
+        <header class="cart-header">
+          <div>
+            <p class="eyebrow">Sacola</p>
+            <h2>Atendimento via WhatsApp</h2>
+          </div>
+          <button class="icon-button" id="closeCartButton" type="button" aria-label="Fechar sacola">
+            ×
+          </button>
+        </header>
+
+        <div id="cartItems" class="cart-items"></div>
+
+        <form id="checkoutForm" class="checkout-form">
+          <label>
+            Nome
+            <input id="customerName" type="text" required placeholder="Seu nome" />
+          </label>
+          <label>
+            WhatsApp
+            <input id="customerPhone" type="tel" required placeholder="+55 11 99999-9999" />
+          </label>
+          <label>
+            Observacoes
+            <textarea id="checkoutNotes" rows="3" placeholder="Frete, preferencia de pagamento, ajustes..."></textarea>
+          </label>
+          <div class="cart-total">
+            <span>Total estimado</span>
+            <strong id="cartTotal">R$ 0,00</strong>
+          </div>
+          <button class="primary-button full" type="submit">Enviar mensagem no WhatsApp</button>
+        </form>
+
+        <div class="checkout-result" id="checkoutResult"></div>
+      </section>
+    </aside>
+
+    <template id="productCardTemplate">
+      <article class="product-card reveal">
+        <div class="product-art">
+          <span class="product-category"></span>
+        </div>
+        <div class="product-body">
+          <div>
+            <h3></h3>
+            <p class="product-description"></p>
+          </div>
+          <div class="product-meta">
+            <span class="product-price"></span>
+            <span class="product-stock"></span>
+          </div>
+          <div class="product-tags"></div>
+          <button class="add-button" type="button">Adicionar a sacola</button>
+        </div>
+      </article>
+    </template>
+
+    <script src="/static/app.js" defer></script>
+  </body>
+</html>
