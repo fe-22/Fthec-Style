@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Fthec Style — Vitrine Virtual</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- Header -->
+  <header class="header">
+    <div class="header__inner">
+      <a href="#" class="logo">Fthec <span>Style</span></a>
+
+      <nav class="nav">
+        <a href="#vitrine">Vitrine</a>
+        <a href="#sobre">Sobre</a>
+        <a href="#contato">Contato</a>
+      </nav>
+
+      <button class="cart-btn" id="cartBtn" aria-label="Carrinho">
+        🛍 <span class="cart-count" id="cartCount">0</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="hero__content">
+      <h1>Vista-se com <span>estilo</span></h1>
+      <p>Roupas e acessórios selecionados para o seu dia a dia.</p>
+      <a href="#vitrine" class="btn btn--primary">Ver coleção</a>
+    </div>
+  </section>
+
+  <!-- Filtros -->
+  <section class="filters" id="vitrine">
+    <div class="container">
+      <h2 class="section-title">Nossa Vitrine</h2>
+      <div class="filter-bar">
+        <button class="filter-btn active" data-filter="all">Todos</button>
+        <button class="filter-btn" data-filter="roupas">Roupas</button>
+        <button class="filter-btn" data-filter="acessorios">Acessórios</button>
+        <button class="filter-btn" data-filter="calcados">Calçados</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Produtos -->
+  <section class="products">
+    <div class="container">
+      <div class="product-grid" id="productGrid">
+        <!-- Produtos inseridos via JS -->
+      </div>
+    </div>
+  </section>
+
+  <!-- Carrinho (side drawer) -->
+  <div class="cart-overlay" id="cartOverlay"></div>
+  <aside class="cart-drawer" id="cartDrawer">
+    <div class="cart-drawer__header">
+      <h3>Meu Carrinho</h3>
+      <button class="cart-close" id="cartClose">✕</button>
+    </div>
+    <ul class="cart-items" id="cartItems"></ul>
+    <div class="cart-footer">
+      <p>Total: <strong id="cartTotal">R$ 0,00</strong></p>
+      <button class="btn btn--primary btn--full">Finalizar Compra</button>
+    </div>
+  </aside>
+
+  <!-- Sobre -->
+  <section class="about" id="sobre">
+    <div class="container about__inner">
+      <div class="about__text">
+        <h2>Sobre a Fthec Style</h2>
+        <p>
+          Somos uma vitrine virtual de roupas e acessórios com foco em moda
+          acessível e com estilo. Nossa curadoria reúne peças para todas as
+          ocasiões, do casual ao sofisticado.
+        </p>
+        <p>
+          Qualidade, conforto e tendência em cada peça selecionada para você.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contato -->
+  <section class="contact" id="contato">
+    <div class="container">
+      <h2 class="section-title">Fale Conosco</h2>
+      <form class="contact-form" id="contactForm">
+        <input type="text" placeholder="Seu nome" required />
+        <input type="email" placeholder="Seu e-mail" required />
+        <textarea rows="4" placeholder="Sua mensagem" required></textarea>
+        <button type="submit" class="btn btn--primary">Enviar</button>
+      </form>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <p>© 2024 Fthec Style. Todos os direitos reservados.</p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
