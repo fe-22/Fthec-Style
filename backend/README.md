@@ -76,7 +76,7 @@ DATABASE_URL=<Internal Database URL do Render Postgres>
 SEED_DEMO_DATA=false
 CONSULTANT_WHATSAPP_NUMBER=5511997727075
 PUBLIC_STORE_URL=<URL publica do Render>
-UPLOAD_ROOT=/opt/render/project/src/frontend/uploads
+UPLOAD_ROOT=/var/data/uploads
 ADMIN_PASSWORD=<senha forte>
 ADMIN_SESSION_SECRET=<segredo forte>
 ENABLE_OLLAMA=false
@@ -86,5 +86,5 @@ Para manter as imagens cadastradas depois de redeploy/restart, anexe um disco
 persistente no Web Service com mount path:
 
 ```text
-/opt/render/project/src/frontend/uploads
+/var/data/uploads
 ```

@@ -1,7 +1,7 @@
 from functools import lru_cache
 from pathlib import Path
 
-from pydantic import Field
+from pydantic import Field, field_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
@@ -53,6 +53,11 @@ class Settings(BaseSettings):
         env_file_encoding="utf-8",
         case_sensitive=False,
     )
+
+    @field_validator("upload_root")
+    @classmethod
+    def normalize_upload_root(cls, value: str) -> str:
+        return value.splitlines()[0].strip()
 
 
 @lru_cache

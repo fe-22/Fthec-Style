@@ -9,7 +9,7 @@ services:
     healthCheckPath: /health
     disk:
       name: uploads
-      mountPath: /opt/render/project/src/frontend/uploads
+      mountPath: /var/data/uploads
       sizeGB: 1
     envVars:
       - key: PYTHON_VERSION
@@ -28,7 +28,7 @@ services:
           type: web
           envVarKey: RENDER_EXTERNAL_URL
       - key: UPLOAD_ROOT
-        value: /opt/render/project/src/frontend/uploads
+        value: /var/data/uploads
       - key: ENABLE_OLLAMA
         value: false
       - key: ADMIN_PASSWORD
