@@ -11,6 +11,40 @@ const currency = new Intl.NumberFormat("pt-BR", {
   currency: "BRL",
 });
 
+const COLOR_SWATCHES = {
+  preto: "#171310",
+  branco: "#ffffff",
+  "off white": "#f6efe4",
+  bege: "#d9c5a6",
+  areia: "#cdbb9a",
+  nude: "#d7b49d",
+  caramelo: "#b7743d",
+  camel: "#b7743d",
+  marrom: "#6f4a32",
+  chocolate: "#4f2d20",
+  terracota: "#b65f3d",
+  laranja: "#d87735",
+  amarelo: "#e4bb4d",
+  mostarda: "#b98528",
+  rosa: "#d79aaa",
+  pink: "#d73f7d",
+  vermelho: "#b63c32",
+  vinho: "#6f2534",
+  roxo: "#7a3f91",
+  lilas: "#b69ad4",
+  azul: "#3f628c",
+  "azul marinho": "#1c2f49",
+  jeans: "#58728f",
+  verde: "#536d46",
+  oliva: "#6f744f",
+  militar: "#565f3e",
+  caqui: "#8f845f",
+  cinza: "#9f9b96",
+  grafite: "#47433f",
+  prata: "#c8c5bf",
+  dourado: "#c3a052",
+};
+
 const selectors = {
   productGrid: document.querySelector("#productGrid"),
   categorySelect: document.querySelector("#categorySelect"),
@@ -42,6 +76,28 @@ function splitTerms(value) {
     .split(",")
     .map((item) => normalize(item))
     .filter(Boolean);
+}
+
+function formatLabel(value) {
+  return String(value || "")
+    .trim()
+    .replace(/\s+/g, " ")
+    .replace(/(^|\s)([a-z])/g, (_, space, letter) => `${space}${letter.toUpperCase()}`);
+}
+
+function parseColor(value) {
+  const raw = String(value || "").trim().replace(/\s+/g, " ");
+  const hex = raw.match(/#(?:[0-9a-f]{3}){1,2}\b/i)?.[0] || "";
+  const name = raw
+    .replace(hex, "")
+    .replace(/[:|-]+$/g, "")
+    .trim();
+  const normalizedName = normalize(name || raw);
+
+  return {
+    label: formatLabel(name || raw),
+    value: hex || COLOR_SWATCHES[normalizedName] || "",
+  };
 }
 
 async function request(path, options = {}) {
@@ -147,13 +203,56 @@ function renderProducts() {
     card.querySelector(".product-stock").textContent = `${product.stock} em estoque`;
 
     const tags = card.querySelector(".product-tags");
-    [...(product.tags || []), ...(product.colors || []).slice(0, 2)]
-      .slice(0, 5)
-      .forEach((tag) => {
+    (product.tags || []).slice(0, 5).forEach((tag) => {
+      const chip = document.createElement("span");
+      chip.textContent = tag;
+      tags.append(chip);
+    });
+
+    const palette = card.querySelector(".product-color-palette");
+    const colors = (product.colors || []).filter(Boolean);
+    if (colors.length) {
+      const label = document.createElement("span");
+      label.className = "palette-label";
+      label.textContent = "Cores";
+
+      const swatches = document.createElement("div");
+      swatches.className = "palette-swatches";
+
+      colors.slice(0, 6).forEach((color) => {
+        const parsedColor = parseColor(color);
         const chip = document.createElement("span");
-        chip.textContent = tag;
-        tags.append(chip);
+        chip.className = "color-chip";
+        chip.title = parsedColor.label;
+
+        const dot = document.createElement("span");
+        dot.className = "color-dot";
+        dot.setAttribute("aria-hidden", "true");
+
+        if (parsedColor.value) {
+          dot.style.setProperty("--swatch-color", parsedColor.value);
+        } else {
+          dot.classList.add("is-unknown");
+        }
+
+        const name = document.createElement("span");
+        name.textContent = parsedColor.label;
+
+        chip.append(dot, name);
+        swatches.append(chip);
       });
+
+      if (colors.length > 6) {
+        const more = document.createElement("span");
+        more.className = "color-more";
+        more.textContent = `+${colors.length - 6}`;
+        swatches.append(more);
+      }
+
+      palette.append(label, swatches);
+    } else {
+      palette.remove();
+    }
 
     card.querySelector(".add-button").addEventListener("click", () => addToCart(product));
     selectors.productGrid.append(card);

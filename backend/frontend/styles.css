@@ -527,6 +527,67 @@ textarea:focus {
   background: rgba(255, 255, 255, 0.42);
 }
 
+.product-color-palette {
+  display: grid;
+  gap: 8px;
+}
+
+.palette-label {
+  color: var(--sage);
+  font-size: 11px;
+  font-weight: 900;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.palette-swatches {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+}
+
+.color-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  min-height: 34px;
+  padding: 6px 10px 6px 6px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  color: var(--muted);
+  background: rgba(255, 255, 255, 0.48);
+  font-size: 12px;
+}
+
+.color-dot {
+  width: 19px;
+  height: 19px;
+  border: 1px solid rgba(32, 27, 23, 0.2);
+  border-radius: 50%;
+  background: var(--swatch-color, #d8cbb8);
+  box-shadow:
+    inset 0 0 0 2px rgba(255, 255, 255, 0.28),
+    0 3px 8px rgba(32, 27, 23, 0.12);
+}
+
+.color-dot.is-unknown {
+  background:
+    repeating-linear-gradient(135deg, #efe2d0 0 4px, #cdbb9a 4px 8px);
+}
+
+.color-more {
+  display: inline-flex;
+  align-items: center;
+  min-height: 34px;
+  padding: 0 10px;
+  border: 1px dashed var(--line);
+  border-radius: 999px;
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 800;
+}
+
 .add-button {
   width: 100%;
 }

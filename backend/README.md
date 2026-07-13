@@ -13,6 +13,18 @@ copy .env.example .env
 uvicorn app.main:app --reload
 ```
 
+Com a venv ativa, tambem e possivel iniciar a partir da raiz do repositorio:
+
+```powershell
+uvicorn app.main:app --reload
+```
+
+Alternativa explicita a partir da raiz:
+
+```powershell
+.\.venv\Scripts\python.exe -m uvicorn app.main:app --app-dir backend --reload
+```
+
 Defina `ADMIN_PASSWORD` no `.env` para acessar `/admin` e cadastrar produtos.
 
 API:
@@ -64,9 +76,9 @@ O projeto inclui um `render.yaml` na raiz do repositorio para criar:
 
 Se configurar manualmente no Render:
 
-- Root Directory: `backend`
-- Build Command: `pip install -r requirements.txt`
-- Start Command: `uvicorn app.main:app --host 0.0.0.0 --port $PORT`
+- Root Directory: deixe vazio ou use a raiz do repositorio
+- Build Command: `pip install -r backend/requirements.txt`
+- Start Command: `uvicorn app.main:app --app-dir backend --host 0.0.0.0 --port $PORT`
 - Health Check Path: `/health`
 
 Variaveis obrigatorias:

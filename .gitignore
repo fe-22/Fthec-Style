@@ -8,6 +8,7 @@ backend/.venv/
 backend/frontend/uploads/
 backend/uvicorn.*.log
 backend/vitrine_virtual.db
+vitrine_virtual.db
 
 **/__pycache__/
 *.py[cod]
