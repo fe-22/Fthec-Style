@@ -100,6 +100,10 @@ function parseColor(value) {
   };
 }
 
+function formatSize(value) {
+  return String(value || "").trim().toUpperCase();
+}
+
 async function request(path, options = {}) {
   const response = await fetch(`${API_BASE}${path}`, {
     headers: {
@@ -202,13 +206,6 @@ function renderProducts() {
     card.querySelector(".product-price").textContent = currency.format(Number(product.price));
     card.querySelector(".product-stock").textContent = `${product.stock} em estoque`;
 
-    const tags = card.querySelector(".product-tags");
-    (product.tags || []).slice(0, 5).forEach((tag) => {
-      const chip = document.createElement("span");
-      chip.textContent = tag;
-      tags.append(chip);
-    });
-
     const palette = card.querySelector(".product-color-palette");
     const colors = (product.colors || []).filter(Boolean);
     if (colors.length) {
@@ -252,6 +249,35 @@ function renderProducts() {
       palette.append(label, swatches);
     } else {
       palette.remove();
+    }
+
+    const sizesBlock = card.querySelector(".product-sizes");
+    const sizes = (product.sizes || []).filter(Boolean);
+    if (sizes.length) {
+      const label = document.createElement("span");
+      label.className = "sizes-label";
+      label.textContent = "Tamanhos";
+
+      const sizeList = document.createElement("div");
+      sizeList.className = "size-list";
+
+      sizes.slice(0, 8).forEach((size) => {
+        const chip = document.createElement("span");
+        chip.className = "size-chip";
+        chip.textContent = formatSize(size);
+        sizeList.append(chip);
+      });
+
+      if (sizes.length > 8) {
+        const more = document.createElement("span");
+        more.className = "size-more";
+        more.textContent = `+${sizes.length - 8}`;
+        sizeList.append(more);
+      }
+
+      sizesBlock.append(label, sizeList);
+    } else {
+      sizesBlock.remove();
     }
 
     card.querySelector(".add-button").addEventListener("click", () => addToCart(product));
