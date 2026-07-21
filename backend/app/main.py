@@ -25,6 +25,23 @@ FRONTEND_DIR = BASE_DIR / "frontend"
 UPLOADS_DIR = Path(settings.upload_root)
 
 
+class NoCacheStaticFiles(StaticFiles):
+    async def get_response(self, path: str, scope):
+        response = await super().get_response(path, scope)
+        response.headers["Cache-Control"] = "no-store, no-cache, must-revalidate, max-age=0"
+        response.headers["Pragma"] = "no-cache"
+        response.headers["Expires"] = "0"
+        return response
+
+
+def frontend_file(filename: str) -> FileResponse:
+    response = FileResponse(FRONTEND_DIR / filename)
+    response.headers["Cache-Control"] = "no-store, no-cache, must-revalidate, max-age=0"
+    response.headers["Pragma"] = "no-cache"
+    response.headers["Expires"] = "0"
+    return response
+
+
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     init_database()
@@ -57,7 +74,7 @@ app.include_router(stylist.router, prefix=settings.api_prefix)
 app.include_router(uploads.router, prefix=settings.api_prefix)
 
 UPLOADS_DIR.mkdir(parents=True, exist_ok=True)
-app.mount("/static", StaticFiles(directory=FRONTEND_DIR), name="static")
+app.mount("/static", NoCacheStaticFiles(directory=FRONTEND_DIR), name="static")
 app.mount("/uploads", StaticFiles(directory=UPLOADS_DIR), name="uploads")
 
 
@@ -68,15 +85,15 @@ def health_check() -> dict[str, str]:
 
 @app.get("/", include_in_schema=False)
 def storefront() -> FileResponse:
-    return FileResponse(FRONTEND_DIR / "index.html")
+    return frontend_file("index.html")
 
 
 @app.get("/admin", include_in_schema=False)
 def admin_panel(request: Request) -> FileResponse:
     if not is_admin_session_valid(request, settings):
-        return FileResponse(FRONTEND_DIR / "admin-login.html")
+        return frontend_file("admin-login.html")
 
-    return FileResponse(FRONTEND_DIR / "admin.html")
+    return frontend_file("admin.html")
 
 
 @app.post("/admin/login", include_in_schema=False)

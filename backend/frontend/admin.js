@@ -6,12 +6,17 @@ const productList = document.querySelector("#adminProductList");
 const formTitle = document.querySelector("#formTitle");
 const formSubmitButton = document.querySelector("#formSubmitButton");
 const cancelEditButton = document.querySelector("#cancelEditButton");
+const erpReportForm = document.querySelector("#erpReportForm");
+const erpReportInput = document.querySelector("#erpReportInput");
+const erpReportSubmitButton = document.querySelector("#erpReportSubmitButton");
+const erpReportStatus = document.querySelector("#erpReportStatus");
 
 const fields = {
   sku: document.querySelector("#skuInput"),
   name: document.querySelector("#nameInput"),
   description: document.querySelector("#descriptionInput"),
   category: document.querySelector("#categoryInput"),
+  purchasePrice: document.querySelector("#purchasePriceInput"),
   price: document.querySelector("#priceInput"),
   stock: document.querySelector("#stockInput"),
   sizes: document.querySelector("#sizesInput"),
@@ -51,6 +56,11 @@ function slug(value) {
 function setStatus(message, state = "neutral") {
   formStatus.textContent = message;
   formStatus.dataset.state = state;
+}
+
+function setErpReportStatus(message, state = "neutral") {
+  erpReportStatus.textContent = message;
+  erpReportStatus.dataset.state = state;
 }
 
 function setLoadingState(isLoading) {
@@ -141,7 +151,10 @@ function renderProduct(product) {
   meta.textContent = `${product.category} - ${product.sku}`;
 
   const stock = document.createElement("small");
-  stock.textContent = `${money.format(Number(product.price))} - Estoque ${product.stock}`;
+  const purchasePrice = product.purchase_price
+    ? `Compra ${money.format(Number(product.purchase_price))} - `
+    : "";
+  stock.textContent = `${purchasePrice}Venda ${money.format(Number(product.price))} - Estoque ${product.stock}`;
 
   details.append(titleLine, meta, stock);
 
@@ -184,7 +197,7 @@ async function loadProducts() {
   productList.replaceChildren(makeStateMessage("Carregando produtos..."));
 
   try {
-    products = await api("/api/v1/products?active_only=false");
+    products = await api("/api/v1/products/admin?active_only=false");
     renderProducts();
   } catch (error) {
     if (error.status === 401) {
@@ -210,6 +223,18 @@ async function uploadImage(file) {
     }
   );
   return result.image_url;
+}
+
+async function uploadErpReport(file) {
+  const result = await api(
+    `/api/v1/uploads/erp-report?filename=${encodeURIComponent(file.name)}`,
+    {
+      method: "POST",
+      headers: { "Content-Type": file.type || "application/octet-stream" },
+      body: file,
+    }
+  );
+  return result;
 }
 
 function showPreview(url, altText = "Foto do produto") {
@@ -253,6 +278,7 @@ function fillForm(product) {
   fields.name.value = product.name;
   fields.description.value = product.description || "";
   fields.category.value = product.category;
+  fields.purchasePrice.value = product.purchase_price || "";
   fields.price.value = product.price;
   fields.stock.value = product.stock;
   fields.sizes.value = fromList(product.sizes);
@@ -270,6 +296,7 @@ function buildPayload(imageUrl) {
     name: fields.name.value.trim(),
     description: fields.description.value.trim(),
     category: fields.category.value.trim().toLowerCase(),
+    purchase_price: fields.purchasePrice.value || null,
     price: fields.price.value,
     stock: Number(fields.stock.value),
     image_url: imageUrl || editingProduct?.image_url || null,
@@ -377,6 +404,51 @@ productForm.addEventListener("submit", async (event) => {
     setStatus(error.message || "Nao foi possivel salvar. Confira os campos obrigatorios.", "error");
   } finally {
     setLoadingState(false);
+  }
+});
+
+erpReportForm.addEventListener("submit", async (event) => {
+  event.preventDefault();
+
+  const file = erpReportInput.files?.[0];
+  if (!file) {
+    setErpReportStatus("Selecione o relatorio extraido do ERP.", "error");
+    return;
+  }
+
+  erpReportSubmitButton.disabled = true;
+  setErpReportStatus("Enviando relatorio...");
+
+  try {
+    const result = await uploadErpReport(file);
+    const sizeMb = Number(result.size_bytes || 0) / 1024 / 1024;
+    const extractedTextChars = Number(result.extracted_text_chars || 0);
+    const importedProducts = Number(result.imported_products || 0);
+    const updatedProducts = Number(result.updated_products || 0);
+    const importedImages = Number(result.imported_images || 0);
+    const extractedTextMessage = extractedTextChars
+      ? ` Texto extraido: ${extractedTextChars} caracteres.`
+      : "";
+    const importMessage =
+      importedProducts || updatedProducts
+        ? ` Produtos criados: ${importedProducts}. Produtos atualizados: ${updatedProducts}.`
+        : " Nenhum produto foi importado.";
+    const imageMessage = importedImages ? ` Fotos vinculadas: ${importedImages}.` : "";
+    erpReportForm.reset();
+    setErpReportStatus(
+      `Relatorio enviado: ${result.original_filename} (${sizeMb.toFixed(2)} MB).${extractedTextMessage}${importMessage}${imageMessage}`,
+      "success"
+    );
+    await loadProducts();
+  } catch (error) {
+    if (error.status === 401) {
+      window.location.href = "/admin";
+      return;
+    }
+
+    setErpReportStatus(error.message || "Nao foi possivel enviar o relatorio.", "error");
+  } finally {
+    erpReportSubmitButton.disabled = false;
   }
 });
 

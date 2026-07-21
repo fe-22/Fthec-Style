@@ -15,6 +15,7 @@ class Product(Base):
     name: Mapped[str] = mapped_column(String(180), index=True)
     description: Mapped[str] = mapped_column(Text, default="")
     category: Mapped[str] = mapped_column(String(80), index=True)
+    purchase_price: Mapped[Decimal | None] = mapped_column(Numeric(10, 2), nullable=True)
     price: Mapped[Decimal] = mapped_column(Numeric(10, 2))
     stock: Mapped[int] = mapped_column(Integer, default=0)
     image_url: Mapped[str | None] = mapped_column(String(500), nullable=True)

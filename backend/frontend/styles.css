@@ -916,6 +916,26 @@ textarea:focus {
   box-shadow: 0 16px 46px rgba(76, 51, 31, 0.1);
 }
 
+.erp-upload-card {
+  margin-bottom: 24px;
+}
+
+.section-header.compact {
+  grid-template-columns: 1fr minmax(240px, 420px);
+  padding: 0 0 18px;
+}
+
+.section-header.compact h2 {
+  font-size: clamp(30px, 4vw, 42px);
+}
+
+.erp-upload-form {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 14px;
+  align-items: end;
+}
+
 .admin-form {
   display: grid;
   gap: 14px;

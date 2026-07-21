@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>PriStilo | Painel Administrativo</title>
-    <link rel="stylesheet" href="/static/styles.css?v=20260713-3" />
+    <link rel="stylesheet" href="/static/styles.css?v=20260721-5" />
   </head>
   <body>
     <div class="page-shell">
@@ -34,6 +34,26 @@
             <h1>Produtos da vitrine</h1>
           </div>
           <p>Cadastre e ajuste as pecas que aparecem na vitrine.</p>
+        </section>
+
+        <section class="admin-card erp-upload-card">
+          <div class="section-header compact">
+            <div>
+              <p class="eyebrow">ERP</p>
+              <h2>Enviar relatorio</h2>
+            </div>
+            <p>Envie o PDF extraido do ERP. O sistema salva o arquivo e extrai o texto para conferencia.</p>
+          </div>
+
+          <form class="erp-upload-form" id="erpReportForm">
+            <label>
+              Relatorio do ERP
+              <input id="erpReportInput" type="file" accept=".pdf,application/pdf" required />
+              <span class="form-help">Formato aceito: PDF. Limite de 100 MB.</span>
+            </label>
+            <button class="primary-button" id="erpReportSubmitButton" type="submit">Enviar relatorio</button>
+          </form>
+          <p class="form-status" id="erpReportStatus" role="status"></p>
         </section>
 
         <section class="admin-layout">
@@ -84,23 +104,28 @@
                   <input id="categoryInput" type="text" required placeholder="vestido, blazer, calca..." />
                 </label>
                 <label>
-                  Preco
+                  Preco de venda
                   <input id="priceInput" type="number" min="0.01" step="0.01" required placeholder="249.90" />
                 </label>
               </div>
 
               <div class="field-grid">
                 <label>
-                  Estoque
-                  <input id="stockInput" type="number" min="0" step="1" required value="1" />
+                  Preco de compra
+                  <input id="purchasePriceInput" type="number" min="0" step="0.01" placeholder="129.90" />
+                  <span class="form-help">Visivel apenas neste painel administrativo.</span>
                 </label>
                 <label>
-                  Tamanhos
-                  <input id="sizesInput" type="text" placeholder="p, m, g ou 36, 38, 40" />
+                  Estoque
+                  <input id="stockInput" type="number" min="0" step="1" required value="1" />
                 </label>
               </div>
 
               <div class="field-grid">
+                <label>
+                  Tamanhos
+                  <input id="sizesInput" type="text" placeholder="p, m, g ou 36, 38, 40" />
+                </label>
                 <label>
                   Cores
                   <input id="colorsInput" type="text" placeholder="preto, off white, verde" />
@@ -136,6 +161,6 @@
       </main>
     </div>
 
-    <script src="/static/admin.js?v=20260713-3" defer></script>
+    <script src="/static/admin.js?v=20260721-7" defer></script>
   </body>
 </html>

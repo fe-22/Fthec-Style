@@ -25,13 +25,14 @@ class ProductBase(BaseModel):
 
 
 class ProductCreate(ProductBase):
-    pass
+    purchase_price: Decimal | None = Field(default=None, ge=0)
 
 
 class ProductUpdate(BaseModel):
     name: str | None = Field(default=None, min_length=2, max_length=180)
     description: str | None = None
     category: str | None = Field(default=None, min_length=2, max_length=80)
+    purchase_price: Decimal | None = Field(default=None, ge=0)
     price: Decimal | None = Field(default=None, gt=0)
     stock: int | None = Field(default=None, ge=0)
     image_url: str | None = None
@@ -48,6 +49,10 @@ class ProductRead(ProductBase):
     updated_at: datetime
 
     model_config = ConfigDict(from_attributes=True)
+
+
+class ProductAdminRead(ProductRead):
+    purchase_price: Decimal | None = None
 
 
 class CustomerCreate(BaseModel):
